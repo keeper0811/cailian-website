@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 900" role="img" aria-label="Demo permanent makeup artist portrait">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d8c8bd"/><stop offset="1" stop-color="#786253"/></linearGradient><radialGradient id="skin" cx="50%" cy="35%" r="55%"><stop stop-color="#f2cbb3"/><stop offset="1" stop-color="#b97f69"/></radialGradient></defs>
+  <rect width="800" height="900" fill="url(#bg)"/>
+  <path d="M120 900c20-215 126-327 280-327s259 112 280 327Z" fill="#2c2525"/>
+  <ellipse cx="400" cy="355" rx="196" ry="240" fill="url(#skin)"/>
+  <path d="M205 386c-35-170 12-300 132-353 123-54 263 22 292 156 13 60 4 141-14 205-18-112-90-217-211-241-64 51-126 93-199 113Z" fill="#2a2020"/>
+  <path d="M278 328c41-27 86-29 128-7M454 321c42-23 83-20 116 4" fill="none" stroke="#4b302b" stroke-width="12" stroke-linecap="round"/>
+  <ellipse cx="350" cy="365" rx="23" ry="28" fill="#4c342e"/><ellipse cx="505" cy="365" rx="23" ry="28" fill="#4c342e"/>
+  <path d="M354 501c44 28 95 27 137-2" fill="none" stroke="#9d4b5c" stroke-width="15" stroke-linecap="round"/>
+</svg>

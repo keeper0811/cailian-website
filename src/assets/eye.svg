@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Demo eyeliner image">
+  <defs><linearGradient id="skin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f2cdb7"/><stop offset="1" stop-color="#c58c75"/></linearGradient></defs>
+  <rect width="800" height="600" fill="url(#skin)"/>
+  <path d="M70 337c172-173 428-177 656-20-188 177-470 187-656 20Z" fill="#fff" opacity=".9"/>
+  <ellipse cx="395" cy="330" rx="126" ry="137" fill="#79503f"/><ellipse cx="395" cy="330" rx="63" ry="78" fill="#1d1816"/><circle cx="438" cy="285" r="24" fill="#fff" opacity=".9"/>
+  <path d="M67 336c181-145 425-157 659-19" fill="none" stroke="#271c1a" stroke-width="21" stroke-linecap="round"/>
+  <path d="M79 318c175-122 412-130 640-5" fill="none" stroke="#8f3f58" stroke-width="7" opacity=".7"/>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Demo lip blush image">
+  <defs><linearGradient id="skin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f2ceb9"/><stop offset="1" stop-color="#c9947d"/></linearGradient><linearGradient id="lip" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b45c70"/><stop offset="1" stop-color="#8f3f58"/></linearGradient></defs>
+  <rect width="800" height="600" fill="url(#skin)"/>
+  <path d="M112 304c97-22 171-81 274-93 64-8 116 43 177 68 45 18 90 23 126 15-53 77-158 103-276 100-121-3-227-33-301-90Z" fill="url(#lip)"/>
+  <path d="M112 304c107 21 203 15 300-15 91 28 183 31 277 5-70 32-169 52-281 48-116-4-213-16-296-38Z" fill="#733344" opacity=".55"/>
+  <path d="M154 319c153 55 334 53 492-7" fill="none" stroke="#f3a7af" stroke-width="9" opacity=".34"/>
+</svg>
