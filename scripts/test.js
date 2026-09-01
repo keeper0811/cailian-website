@@ -44,6 +44,7 @@ site.languageCodes.forEach(function (language) {
     check(html.indexOf('<form') === -1, relative + ' must not collect form data');
     check(html.indexOf('<input') === -1, relative + ' must not collect input data');
     check(html.indexOf('googletagmanager') === -1 && html.indexOf('analytics') === -1, relative + ' must not include tracking');
+    check(html.indexOf('MVP') === -1 && html.indexOf('DEMO') === -1 && html.indexOf('示意') === -1 && html.indexOf('minh họa') === -1 && html.indexOf('placeholder') === -1, relative + ' has no prototype notes');
     site.languageCodes.forEach(function (alternate) {
       check(html.indexOf('hreflang="' + alternate + '"') !== -1, relative + ' links language ' + alternate);
     });
@@ -51,8 +52,11 @@ site.languageCodes.forEach(function (language) {
 });
 
 site.languageCodes.forEach(function (language) {
+  var home = read(path.join(language, 'index.html'));
   var services = read(path.join(language, 'services', 'index.html'));
   var booking = read(path.join(language, 'booking', 'index.html'));
+  check(home.indexOf('hero-work-link') === -1, language + ' hero has no portfolio link');
+  check(home.indexOf('hero-photo.webp') !== -1, language + ' home uses the portrait photo');
   check(services.indexOf('data-faq-button') !== -1, language + ' services page contains FAQ');
   check(booking.indexOf('data-booking-page') !== -1, language + ' booking page is present');
   check(booking.indexOf('Google Maps') !== -1, language + ' booking page links to Google Maps');
@@ -70,12 +74,19 @@ check(/@media \(max-width: 900px\)[\s\S]*?\.service-detail\s*\{[^}]*grid-templat
 check(css.indexOf('prefers-reduced-motion') !== -1, 'reduced-motion support exists');
 check(/\.mobile-menu\s*\{[^}]*display:\s*none/.test(css), 'mobile menu is hidden before it is opened');
 check(/\.mobile-menu\.is-open\s*\{[^}]*display:\s*block/.test(css), 'mobile menu becomes visible when opened');
+check(/@media \(max-width: 767px\)[\s\S]*?\.service-preview-grid, \.result-grid, \.review-grid\s*\{[^}]*display:\s*grid/.test(css), 'mobile home cards use a vertical grid');
+check(!/@media \(max-width: 767px\)[\s\S]*?\.service-preview-grid, \.result-grid, \.review-grid\s*\{[^}]*overflow-x:\s*auto/.test(css), 'mobile home cards do not scroll horizontally');
+check(/@media \(max-width: 767px\)[\s\S]*?\.hero-visual \.hero-image\s*\{[^}]*position:\s*absolute/.test(css), 'mobile hero photo fills its visual frame');
 check(script.indexOf("matchMedia('(max-width: 767px)')") !== -1, 'mobile LINE behavior is implemented');
 check(script.indexOf('localStorage') !== -1, 'language preference stays in the browser');
 check((sitemap.match(/<url>/g) || []).length === 15, 'sitemap contains all localized pages');
 
-['hero-face.svg', 'brow-before.svg', 'brow-after.svg', 'eye.svg', 'lip.svg', 'artist.svg', 'studio.svg', 'line-qr-demo.svg'].forEach(function (asset) {
+['hero-photo.webp', 'brow-pair.webp', 'eye-pair.webp', 'lip-pair.webp', 'artist-photo.webp', 'studio-photo.webp', 'line-qr-demo.svg'].forEach(function (asset) {
   check(fs.existsSync(path.join(dist, 'assets', asset)), asset + ' exists');
+});
+
+['hero-face.svg', 'brow-before.svg', 'brow-after.svg', 'eye.svg', 'lip.svg', 'artist.svg', 'studio.svg'].forEach(function (asset) {
+  check(!fs.existsSync(path.join(root, 'src', 'assets', asset)), asset + ' placeholder is removed');
 });
 
 console.log('All ' + checks + ' checks passed.');
