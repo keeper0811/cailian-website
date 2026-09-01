@@ -20,6 +20,9 @@ function check(condition, message) {
 
 check(fs.existsSync(dist), 'dist/ must exist; run npm run build first');
 
+check(fs.existsSync(path.join(root, 'agent.md')), 'agent.md project instructions exist');
+check(!fs.existsSync(path.join(root, 'blueprint.md')), 'obsolete blueprint.md name is removed');
+
 var websiteDocumentPath = path.join(root, '網站說明.md');
 check(fs.existsSync(websiteDocumentPath), 'website discussion document exists');
 var websiteDocument = fs.readFileSync(websiteDocumentPath, 'utf8');
