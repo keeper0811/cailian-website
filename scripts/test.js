@@ -20,6 +20,13 @@ function check(condition, message) {
 
 check(fs.existsSync(dist), 'dist/ must exist; run npm run build first');
 
+var websiteDocumentPath = path.join(root, '網站說明.md');
+check(fs.existsSync(websiteDocumentPath), 'website discussion document exists');
+var websiteDocument = fs.readFileSync(websiteDocumentPath, 'utf8');
+['# 采蓮紋繡形象網站說明', '## 網站頁面', '## LINE 預約方式', '## 待確認與替換資料', '## 決策紀錄'].forEach(function (heading) {
+  check(websiteDocument.indexOf(heading) !== -1, 'website discussion document contains ' + heading);
+});
+
 site.languageCodes.forEach(function (language) {
   site.pageKeys.forEach(function (page) {
     var slug = site.pageSlugs[page];
