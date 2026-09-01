@@ -26,8 +26,11 @@ check(!fs.existsSync(path.join(root, 'blueprint.md')), 'obsolete blueprint.md na
 var websiteDocumentPath = path.join(root, '網站說明.md');
 check(fs.existsSync(websiteDocumentPath), 'website discussion document exists');
 var websiteDocument = fs.readFileSync(websiteDocumentPath, 'utf8');
-['# 采蓮紋繡形象網站說明', '## 網站頁面', '## LINE 預約方式', '## 待確認與替換資料', '## 決策紀錄'].forEach(function (heading) {
+['# 采蓮紋繡形象網站｜溝通與修改規格', '## 3. 網站地圖與網址', '### G-04 LINE 預約入口', '### H-01 首頁主視覺', '### S-05 FAQ', '### P-03 案例列表', '### A-02 紋繡師介紹', '### B-03 店家資訊', '## 11. RWD 與裝置差異', '## 15. 程式與內容位置', '## 18. 修改需求建議格式', '## 20. 決策紀錄'].forEach(function (heading) {
   check(websiteDocument.indexOf(heading) !== -1, 'website discussion document contains ' + heading);
+});
+['/zh/services/', '/en/portfolio/', '/vi/booking/', '@cailian-demo', '#06C755', 'src/site.js', 'npm run check'].forEach(function (detail) {
+  check(websiteDocument.indexOf(detail) !== -1, 'website discussion document records ' + detail);
 });
 
 site.languageCodes.forEach(function (language) {
