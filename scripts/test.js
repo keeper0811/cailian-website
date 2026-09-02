@@ -110,7 +110,7 @@ if (savedOrigin === undefined) delete process.env.SITE_ORIGIN; else process.env.
 var workflowPath = path.join(root, '.github', 'workflows', 'pages.yml');
 check(fs.existsSync(workflowPath), 'GitHub Pages deployment workflow exists');
 var workflow = fs.readFileSync(workflowPath, 'utf8');
-['actions/configure-pages@v5', 'actions/upload-pages-artifact@v3', 'actions/deploy-pages@v4', 'SITE_BASE_PATH: /cailian-website', 'SITE_ORIGIN: https://keeper0811.github.io', 'path: dist'].forEach(function (detail) {
+['actions/checkout@v6', 'actions/configure-pages@v5', 'actions/upload-pages-artifact@v4', 'actions/deploy-pages@v4', 'SITE_BASE_PATH: /cailian-website', 'SITE_ORIGIN: https://keeper0811.github.io', 'path: dist'].forEach(function (detail) {
   check(workflow.indexOf(detail) !== -1, 'GitHub Pages workflow contains ' + detail);
 });
 
