@@ -5,6 +5,25 @@ var pageKeys = ['home', 'services', 'portfolio', 'about', 'booking'];
 var pageSlugs = { home: '', services: 'services', portfolio: 'portfolio', about: 'about', booking: 'booking' };
 var lineUrl = 'https://line.me/R/ti/p/@cailian-demo';
 
+function getBasePath() {
+  var value = (process.env.SITE_BASE_PATH || '').replace(/\\/g, '/').replace(/^\/+|\/+$/g, '');
+  return value ? '/' + value : '';
+}
+
+function getSiteOrigin() {
+  return (process.env.SITE_ORIGIN || 'https://example.com').replace(/\/+$/g, '');
+}
+
+function sitePath(pathname) {
+  var normalized = pathname || '/';
+  if (normalized.charAt(0) !== '/') normalized = '/' + normalized;
+  return getBasePath() + normalized;
+}
+
+function siteUrl(pathname) {
+  return getSiteOrigin() + sitePath(pathname);
+}
+
 var content = {
   zh: {
     htmlLocale: 'zh-Hant', languageName: '中文', shortLanguage: '中文',
@@ -131,11 +150,11 @@ var content = {
 
 function routeFor(language, page) {
   var slug = pageSlugs[page];
-  return '/' + language + '/' + (slug ? slug + '/' : '');
+  return sitePath('/' + language + '/' + (slug ? slug + '/' : ''));
 }
 
 function image(name, alt, className) {
-  return '<img class="' + (className || '') + '" src="/assets/' + name + '" alt="' + alt + '" loading="lazy">';
+  return '<img class="' + (className || '') + '" src="' + sitePath('/assets/' + name) + '" alt="' + alt + '" loading="lazy">';
 }
 
 function comparisonImage(name, alt, side) {
@@ -209,29 +228,34 @@ function renderBooking(language, copy) {
 function footer(language, page, copy) {
   return '<footer class="site-footer"><div><a class="brand footer-brand" href="' + routeFor(language, 'home') + '">' + logo(copy) + '</a><p>' + copy.footer.note + '</p></div><nav aria-label="Footer">' + pageKeys.map(function (key) { return '<a href="' + routeFor(language, key) + '">' + copy.nav[key] + '</a>'; }).join('') + '</nav><small>' + copy.footer.rights + '</small></footer>' +
     '<div class="mobile-line-bar">' + lineButton(copy, '') + '</div>' +
-    '<div class="modal-backdrop" data-line-modal hidden><section class="line-modal" role="dialog" aria-modal="true" aria-labelledby="line-modal-title"><button class="modal-close" type="button" data-modal-close aria-label="' + copy.actions.close + '">×</button><p class="eyebrow">LINE</p><h2 id="line-modal-title">' + copy.booking.lineTitle + '</h2><img src="/assets/line-qr-demo.svg" alt="LINE QR Code"><p>' + copy.booking.lineBody + '</p><small>LINE · @cailian-demo</small></section></div>';
+    '<div class="modal-backdrop" data-line-modal hidden><section class="line-modal" role="dialog" aria-modal="true" aria-labelledby="line-modal-title"><button class="modal-close" type="button" data-modal-close aria-label="' + copy.actions.close + '">×</button><p class="eyebrow">LINE</p><h2 id="line-modal-title">' + copy.booking.lineTitle + '</h2><img src="' + sitePath('/assets/line-qr-demo.svg') + '" alt="LINE QR Code"><p>' + copy.booking.lineBody + '</p><small>LINE · @cailian-demo</small></section></div>';
 }
 
 function renderPage(language, page) {
   var copy = content[language];
   var meta = copy.meta[page];
-  var alternates = languageCodes.map(function (code) { return '<link rel="alternate" hreflang="' + code + '" href="https://example.com' + routeFor(code, page) + '">'; }).join('');
+  var alternates = languageCodes.map(function (code) { return '<link rel="alternate" hreflang="' + code + '" href="' + getSiteOrigin() + routeFor(code, page) + '">'; }).join('');
   var body = page === 'home' ? renderHome(language, copy) : page === 'services' ? renderServices(language, copy) : page === 'portfolio' ? renderPortfolio(language, copy) : page === 'about' ? renderAbout(language, copy) : renderBooking(language, copy);
-  return '<!doctype html><html lang="' + language + '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + meta[0] + '</title><meta name="description" content="' + meta[1] + '"><meta name="theme-color" content="#faf8f6"><link rel="canonical" href="https://example.com' + routeFor(language, page) + '">' + alternates + '<link rel="stylesheet" href="/assets/styles.css"><script src="/assets/app.js" defer></script></head><body data-language="' + language + '" data-page="' + page + '"><a class="skip-link" href="#main">Skip to content</a>' + header(language, page, copy) + body + footer(language, page, copy) + '</body></html>';
+  return '<!doctype html><html lang="' + language + '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + meta[0] + '</title><meta name="description" content="' + meta[1] + '"><meta name="theme-color" content="#faf8f6"><link rel="canonical" href="' + getSiteOrigin() + routeFor(language, page) + '">' + alternates + '<link rel="stylesheet" href="' + sitePath('/assets/styles.css') + '"><script src="' + sitePath('/assets/app.js') + '" defer></script></head><body data-language="' + language + '" data-page="' + page + '"><a class="skip-link" href="#main">Skip to content</a>' + header(language, page, copy) + body + footer(language, page, copy) + '</body></html>';
 }
 
 function renderLanguageRedirect() {
-  return '<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cailian Atelier</title><script>(function(){var saved;try{saved=localStorage.getItem("site-language");}catch(e){}var lang=saved||((navigator.language||"").toLowerCase().indexOf("vi")===0?"vi":(navigator.language||"").toLowerCase().indexOf("en")===0?"en":"zh");location.replace("/"+lang+"/");}());</script><noscript><meta http-equiv="refresh" content="0; url=/zh/"></noscript></head><body><p><a href="/zh/">中文</a> · <a href="/en/">English</a> · <a href="/vi/">Tiếng Việt</a></p></body></html>';
+  var rootPath = sitePath('/');
+  return '<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cailian Atelier</title><script>(function(){var saved;try{saved=localStorage.getItem("site-language");}catch(e){}var lang=saved||((navigator.language||"").toLowerCase().indexOf("vi")===0?"vi":(navigator.language||"").toLowerCase().indexOf("en")===0?"en":"zh");location.replace(' + JSON.stringify(rootPath) + '+lang+"/");}());</script><noscript><meta http-equiv="refresh" content="0; url=' + routeFor('zh', 'home') + '"></noscript></head><body><p><a href="' + routeFor('zh', 'home') + '">中文</a> · <a href="' + routeFor('en', 'home') + '">English</a> · <a href="' + routeFor('vi', 'home') + '">Tiếng Việt</a></p></body></html>';
 }
 
 function renderNotFound() {
-  return '<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/assets/styles.css"><title>Page not found</title></head><body><main class="not-found"><p class="eyebrow">404</p><h1>找不到這個頁面</h1><a class="earth-button" href="/zh/">返回首頁</a></main></body></html>';
+  return '<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="' + sitePath('/assets/styles.css') + '"><title>Page not found</title></head><body><main class="not-found"><p class="eyebrow">404</p><h1>找不到這個頁面</h1><a class="earth-button" href="' + routeFor('zh', 'home') + '">返回首頁</a></main></body></html>';
 }
 
 function renderSitemap() {
   var urls = [];
-  languageCodes.forEach(function (language) { pageKeys.forEach(function (page) { urls.push('<url><loc>https://example.com' + routeFor(language, page) + '</loc></url>'); }); });
+  languageCodes.forEach(function (language) { pageKeys.forEach(function (page) { urls.push('<url><loc>' + getSiteOrigin() + routeFor(language, page) + '</loc></url>'); }); });
   return '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + urls.join('') + '</urlset>';
 }
 
-module.exports = { languageCodes: languageCodes, pageKeys: pageKeys, pageSlugs: pageSlugs, renderPage: renderPage, renderLanguageRedirect: renderLanguageRedirect, renderNotFound: renderNotFound, renderSitemap: renderSitemap };
+function renderRobots() {
+  return 'User-agent: *\nAllow: /\nSitemap: ' + siteUrl('/sitemap.xml') + '\n';
+}
+
+module.exports = { languageCodes: languageCodes, pageKeys: pageKeys, pageSlugs: pageSlugs, sitePath: sitePath, siteUrl: siteUrl, renderPage: renderPage, renderLanguageRedirect: renderLanguageRedirect, renderNotFound: renderNotFound, renderSitemap: renderSitemap, renderRobots: renderRobots };

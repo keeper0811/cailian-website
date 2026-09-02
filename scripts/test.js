@@ -65,6 +65,10 @@ site.languageCodes.forEach(function (language) {
 var css = read(path.join('assets', 'styles.css'));
 var script = read(path.join('assets', 'app.js'));
 var sitemap = read('sitemap.xml');
+var robots = read('robots.txt');
+var expectedBasePath = (process.env.SITE_BASE_PATH || '').replace(/\\/g, '/').replace(/^\/+|\/+$/g, '');
+expectedBasePath = expectedBasePath ? '/' + expectedBasePath : '';
+var expectedOrigin = (process.env.SITE_ORIGIN || 'https://example.com').replace(/\/+$/g, '');
 
 check(css.indexOf('#786253') !== -1, 'earth-tone secondary color is defined');
 check(css.indexOf('#06c755') !== -1, 'official LINE green is defined');
@@ -80,6 +84,35 @@ check(/@media \(max-width: 767px\)[\s\S]*?\.hero-visual \.hero-image\s*\{[^}]*po
 check(script.indexOf("matchMedia('(max-width: 767px)')") !== -1, 'mobile LINE behavior is implemented');
 check(script.indexOf('localStorage') !== -1, 'language preference stays in the browser');
 check((sitemap.match(/<url>/g) || []).length === 15, 'sitemap contains all localized pages');
+check(read(path.join('zh', 'index.html')).indexOf('href="' + expectedBasePath + '/assets/styles.css"') !== -1, 'built pages use the configured asset base path');
+check(read(path.join('zh', 'index.html')).indexOf('href="' + expectedBasePath + '/zh/services/"') !== -1, 'built pages use the configured route base path');
+check(read(path.join('zh', 'index.html')).indexOf('href="' + expectedOrigin + expectedBasePath + '/zh/"') !== -1, 'canonical URL uses the configured public URL');
+check(read('index.html').indexOf(JSON.stringify(expectedBasePath + '/')) !== -1, 'language redirect uses the configured base path');
+check(sitemap.indexOf('<loc>' + expectedOrigin + expectedBasePath + '/zh/</loc>') !== -1, 'sitemap uses the configured public URL');
+check(robots.indexOf('Sitemap: ' + expectedOrigin + expectedBasePath + '/sitemap.xml') !== -1, 'robots file uses the configured public URL');
+
+var savedBasePath = process.env.SITE_BASE_PATH;
+var savedOrigin = process.env.SITE_ORIGIN;
+process.env.SITE_BASE_PATH = '/cailian-website';
+process.env.SITE_ORIGIN = 'https://keeper0811.github.io';
+var pagesHome = site.renderPage('zh', 'home');
+check(pagesHome.indexOf('href="/cailian-website/assets/styles.css"') !== -1, 'GitHub Pages stylesheet path includes the repository name');
+check(pagesHome.indexOf('src="/cailian-website/assets/hero-photo.webp"') !== -1, 'GitHub Pages image path includes the repository name');
+check(pagesHome.indexOf('href="/cailian-website/zh/services/"') !== -1, 'GitHub Pages navigation includes the repository name');
+check(pagesHome.indexOf('href="https://keeper0811.github.io/cailian-website/zh/"') !== -1, 'GitHub Pages canonical URL is correct');
+check(site.renderLanguageRedirect().indexOf('"/cailian-website/"+lang') !== -1, 'GitHub Pages language redirect stays inside the project path');
+check(site.renderNotFound().indexOf('href="/cailian-website/zh/"') !== -1, 'GitHub Pages 404 link returns to the project home');
+check(site.renderSitemap().indexOf('<loc>https://keeper0811.github.io/cailian-website/vi/booking/</loc>') !== -1, 'GitHub Pages sitemap contains the public booking URL');
+check(site.renderRobots().indexOf('Sitemap: https://keeper0811.github.io/cailian-website/sitemap.xml') !== -1, 'GitHub Pages robots file contains the public sitemap URL');
+if (savedBasePath === undefined) delete process.env.SITE_BASE_PATH; else process.env.SITE_BASE_PATH = savedBasePath;
+if (savedOrigin === undefined) delete process.env.SITE_ORIGIN; else process.env.SITE_ORIGIN = savedOrigin;
+
+var workflowPath = path.join(root, '.github', 'workflows', 'pages.yml');
+check(fs.existsSync(workflowPath), 'GitHub Pages deployment workflow exists');
+var workflow = fs.readFileSync(workflowPath, 'utf8');
+['actions/configure-pages@v5', 'actions/upload-pages-artifact@v3', 'actions/deploy-pages@v4', 'SITE_BASE_PATH: /cailian-website', 'SITE_ORIGIN: https://keeper0811.github.io', 'path: dist'].forEach(function (detail) {
+  check(workflow.indexOf(detail) !== -1, 'GitHub Pages workflow contains ' + detail);
+});
 
 ['hero-photo.webp', 'brow-pair.webp', 'eye-pair.webp', 'lip-pair.webp', 'artist-photo.webp', 'studio-photo.webp', 'line-qr-demo.svg'].forEach(function (asset) {
   check(fs.existsSync(path.join(dist, 'assets', asset)), asset + ' exists');

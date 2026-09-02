@@ -56,6 +56,6 @@ site.languageCodes.forEach(function (language) {
 writePage('index.html', site.renderLanguageRedirect());
 writePage('404.html', site.renderNotFound());
 writePage('sitemap.xml', site.renderSitemap());
-writePage('robots.txt', 'User-agent: *\nAllow: /\nSitemap: https://example.com/sitemap.xml\n');
+writePage('robots.txt', site.renderRobots());
 
 console.log('Built ' + (site.languageCodes.length * site.pageKeys.length) + ' localized pages in dist/.');
