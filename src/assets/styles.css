@@ -9,8 +9,8 @@
   --white: #ffffff;
   --hairline: rgba(44, 37, 37, 0.18);
   --shadow: 0 24px 70px rgba(67, 47, 43, 0.12);
-  --header-height: 60px;
-  --hero-height: 550px;
+  --header-height: 65px;
+  --hero-height: 450px;
   --display: "Noto Serif TC", "Songti TC", "Times New Roman", serif;
   --body: "Noto Sans TC", "Be Vietnam Pro", "Segoe UI", sans-serif;
 }
@@ -123,15 +123,15 @@ em { color: var(--lotus); font-weight: 500; }
   overflow: hidden;
   border-bottom: 1px solid var(--hairline);
 }
-.hero-copy { display: flex; flex-direction: column; justify-content: center; min-height: 0; padding: clamp(30px, 3vw, 44px) 4vw 22px clamp(48px, 7vw, 110px); background: radial-gradient(circle at 8% 14%, rgba(120, 98, 83, 0.12), transparent 30%), var(--porcelain); }
-.hero-copy > .eyebrow { margin-bottom: 10px; }
-.hero-copy h1 { max-width: 780px; margin-bottom: 16px; font-size: clamp(2.6rem, 3.6vw, 4.6rem); }
-.hero-lead { max-width: 550px; margin-bottom: 12px; color: rgba(44, 37, 37, 0.72); font-size: 0.96rem; line-height: 1.5; }
-.hero-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: auto; padding-top: 18px; }
-.hero-features > div { padding-top: 15px; border-top: 1px solid var(--hairline); }
-.hero-features h2 { margin-bottom: 8px; font-family: var(--body); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; }
-.hero-features p { margin-bottom: 0; color: rgba(44, 37, 37, 0.64); font-size: 0.7rem; line-height: 1.5; }
-.feature-symbol { display: block; margin-bottom: 10px; color: var(--earth); font-family: var(--display); font-size: 0.9rem; }
+.hero-copy { display: flex; flex-direction: column; justify-content: center; min-height: 0; padding: clamp(22px, 2.4vw, 34px) 4vw 18px clamp(44px, 6vw, 92px); background: radial-gradient(circle at 8% 14%, rgba(120, 98, 83, 0.12), transparent 30%), var(--porcelain); }
+.hero-copy > .eyebrow { margin-bottom: 6px; }
+.hero-copy h1 { max-width: 780px; margin-bottom: 10px; font-size: clamp(2.25rem, 3vw, 3.9rem); }
+.hero-lead { max-width: 550px; margin-bottom: 8px; color: rgba(44, 37, 37, 0.72); font-size: 0.88rem; line-height: 1.45; }
+.hero-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: auto; padding-top: 12px; }
+.hero-features > div { padding-top: 8px; border-top: 1px solid var(--hairline); }
+.hero-features h2 { margin-bottom: 4px; font-family: var(--body); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; }
+.hero-features p { margin-bottom: 0; color: rgba(44, 37, 37, 0.64); font-size: 0.62rem; line-height: 1.4; }
+.feature-symbol { display: block; margin-bottom: 6px; color: var(--earth); font-family: var(--display); font-size: 0.82rem; }
 .hero-visual { position: relative; min-height: var(--hero-height); overflow: hidden; background: var(--mist); }
 .hero-image { height: 100%; object-fit: cover; }
 .mapping-line { position: absolute; z-index: 2; border: 1px solid rgba(255, 255, 255, 0.82); border-left: 0; border-bottom: 0; border-radius: 50%; pointer-events: none; }
@@ -288,9 +288,9 @@ em { color: var(--lotus); font-weight: 500; }
   .desktop-nav { display: none; }
   .home-hero { grid-template-columns: 0.95fr 1.05fr; }
   .hero-copy { padding-left: 5vw; }
-  .hero-features { grid-template-columns: 1fr; gap: 10px; padding-top: 32px; }
+  .hero-features { grid-template-columns: 1fr; gap: 5px; padding-top: 18px; }
   .hero-features > div { display: grid; grid-template-columns: 34px 115px 1fr; gap: 8px; align-items: start; }
-  .hero-features p { font-size: 0.67rem; }
+  .hero-features p { font-size: 0.61rem; }
   .menu-button { display: block; }
   .mobile-menu { position: fixed; z-index: 45; top: var(--header-height); right: 0; left: 0; display: none; padding: 0 5vw; overflow: hidden; border-bottom: 1px solid var(--hairline); background: var(--porcelain); }
   .mobile-menu.is-open { display: block; padding-top: 24px; padding-bottom: 24px; }
